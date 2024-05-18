@@ -1,0 +1,16 @@
+{
+  "name": "chatter-pwa",
+  "private": "true",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "workspaces": [
+    "workspaces/*"
+  ],
+  "scripts": {
+    "start:dev:client": "yarn workspace @chatter-pwa/client start:dev",
+    "start:dev:server": "yarn workspace @chatter-pwa/server start:dev",
+    "start:prod:client": "yarn workspace @chatter-pwa/client start:prod",
+    "start:prod:server": "yarn workspace @chatter-pwa/server start:prod"
+  }
+}
