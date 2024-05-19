@@ -6,6 +6,11 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
+import {
+  ServerToClientEvents,
+  ClientToServerEvents,
+  Message,
+} from '@chatter-pwa/shared';
 
 @WebSocketGateway({
   cors: {
@@ -28,6 +33,4 @@ export class ChatGateway {
   }
 }
 
-type Message = any;
-type ServerToClientEvents = any;
-type ClientToServerEvents = any;
+
