@@ -2,8 +2,6 @@ import React from 'react';
 import { Message, User } from '@chatter-pwa/shared';
 import { Box, Text } from '@chakra-ui/react';
 
-
-
 export function Messages({ user, messages }: MessagesProps) {
   return (
     <Box className="w-ful flex h-4/6 flex-col-reverse overflow-y-scroll">
