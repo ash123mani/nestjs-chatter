@@ -1,16 +1,7 @@
-import {
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
+import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import {
-  ServerToClientEvents,
-  ClientToServerEvents,
-  Message,
-} from '@chatter-pwa/shared';
+import { ServerToClientEvents, ClientToServerEvents, Message } from '@chatter-pwa/shared';
 
 @WebSocketGateway({
   cors: {
@@ -18,10 +9,7 @@ import {
   },
 })
 export class ChatGateway {
-  @WebSocketServer() server: Server = new Server<
-    ServerToClientEvents,
-    ClientToServerEvents
-  >();
+  @WebSocketServer() server: Server = new Server<ServerToClientEvents, ClientToServerEvents>();
 
   private logger = new Logger('chat-gateway');
 
@@ -32,5 +20,3 @@ export class ChatGateway {
     return payload;
   }
 }
-
-

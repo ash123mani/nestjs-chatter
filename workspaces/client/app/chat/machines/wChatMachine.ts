@@ -11,28 +11,29 @@ export enum ChatMachineState {
 export enum ChatMachineEvent {
   Connect = 'CONNECT',
   Disconnect = 'DISCONNECT',
-  SendMessage = 'SEND_MESSAGE'
+  SendMessage = 'SEND_MESSAGE',
+  LoginUser = 'LOGIN_USER'
 }
 
 // @ts-ignore
 export const wsChatMachine = setup({
   types: {
-      context: {} as ChatMachineContext,
-    events: {} as ChatMachineEvents
+    // actions: {} as ChatMachineActions,
+    context: {} as ChatMachineContext,
+    events: {} as ChatMachineEvents,
   },
   actions: {
     updateLoggedInUser: assign({
-      user: ({ context }) => {
-        const currentUser = JSON.parse(sessionStorage.getItem('user') ?? '{}') as User;
-        if (currentUser.userId) return currentUser
+      user: (_, params: { user: User }) => {
+        if (params.user.userId) return params.user
         else return null;
       }
     }),
   }
 }).createMachine({
   id: "chatMachine",
-  entry: [{ type: 'updateLoggedInUser' }],
-  initial: "disconnected",
+  // entry: [{ type: 'updateLoggedInUser', params: { user: JSON.parse(sessionStorage.getItem('user') ?? '{}') as User } }],
+  initial: ChatMachineState.Disconnected,
   context: {
     messages: [],
     user: null
@@ -43,7 +44,12 @@ export const wsChatMachine = setup({
         [ChatMachineEvent.Disconnect]: ChatMachineState.Disconnected,
         [ChatMachineEvent.SendMessage]: {
           actions: assign({
-            // messages: ({ event, context }: { event: any, context: ChatMachineContext }) => context.messages.push((event.message as Message))
+            messages: ({ event, context }: { event: any, context: ChatMachineContext }) => [ ...context.messages, event.payload as Message ]
+          })
+        },
+        [ChatMachineEvent.LoginUser]: {
+          actions: assign({
+            user: ({ event, context }: { event: any, context: ChatMachineContext }) => event.payload as User
           })
         }
       }
@@ -64,5 +70,7 @@ type ChatMachineContext = {
   messages: Message[],
   user: User | null
 }
-type ChatMachineEvents = { type: ChatMachineEvent } | { type: ChatMachineEvent.SendMessage, message: Message }
+type ChatMachineEvents = { type: ChatMachineEvent } | { type: ChatMachineEvent.SendMessage, payload: Message } | { type: ChatMachineEvent.LoginUser, payload: User }
+type ChatMachineActions = { type: ChatMachineActions, params: { user: User} }
+type ActionTypes = 'updateLoggedInUser'
 
