@@ -32,7 +32,7 @@ export const wsChatMachine = setup({
   }
 }).createMachine({
   id: "chatMachine",
-  // entry: [{ type: 'updateLoggedInUser', params: { user: JSON.parse(sessionStorage.getItem('user') ?? '{}') as User } }],
+  entry: [{ type: 'updateLoggedInUser', params: { user: JSON.parse(sessionStorage.getItem('user') ?? '{}') as User } }],
   initial: ChatMachineState.Disconnected,
   context: {
     messages: [],
