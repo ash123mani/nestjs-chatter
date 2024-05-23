@@ -10,12 +10,11 @@ import { MessageForm } from './components/MessageForm';
 import { LoginForm } from './components/LoginForm';
 import { FormEvent, useEffect } from 'react';
 import { ClientToServerEvents, ServerToClientEvents } from '@chatter-pwa/shared';
-import { ChatMachineEvent, ChatMachineState } from '@/app/chat/machines/wChatMachine';
+import { ChatMachineEvent, ChatMachineState } from '@/app/chat/machines/wsChatMachine';
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io("ws://localhost:3001");
 function Chat() {
   const [state, send] = useActor<typeof wsChatMachine>(wsChatMachine);
-  console.log('state', state.context.messages)
   const { messages, user } = state.context;
   const isConnected = state.matches(ChatMachineState.Connected);
 
@@ -29,7 +28,6 @@ function Chat() {
     });
 
     socket.on('chat', (e) => {
-      console.log('sending message', e)
       send({ type: ChatMachineEvent.SendMessage, payload: e })
     });
 
@@ -42,7 +40,6 @@ function Chat() {
 
   return (
     <Box>
-      <Text fontSize='6xl'>(6xl) In love with React & Next</Text>
       <>
         {user && user.userId ? (
           <>
@@ -52,6 +49,7 @@ function Chat() {
           </>
         ) : (
           <>
+            <Text className="text-2xl py-4 text-white">Please Enter name</Text>
             <LoginForm login={login}></LoginForm>
           </>
         )}

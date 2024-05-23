@@ -15,10 +15,9 @@ export enum ChatMachineEvent {
   LoginUser = 'LOGIN_USER'
 }
 
-// @ts-ignore
 export const wsChatMachine = setup({
   types: {
-    // actions: {} as ChatMachineActions,
+    // actions: {} as ChatMachineActions, // TS Screaming with this but XState Docs suggests to implement like this
     context: {} as ChatMachineContext,
     events: {} as ChatMachineEvents,
   },

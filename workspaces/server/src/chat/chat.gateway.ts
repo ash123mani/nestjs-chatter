@@ -1,22 +1,50 @@
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import {
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+} from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import { ServerToClientEvents, ClientToServerEvents, Message } from '@chatter-pwa/shared';
+import { ServerToClientEvents, ClientToServerEvents, Message, JoinRoomEventPayload } from '@chatter-pwa/shared';
+import { UserService } from '../user/user.service';
 
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(private userService: UserService) {}
+
   @WebSocketServer() server: Server = new Server<ServerToClientEvents, ClientToServerEvents>();
 
-  private logger = new Logger('chat-gateway');
+  private logger = new Logger('ChatGateway');
 
   @SubscribeMessage('chat')
   async handleEvent(@MessageBody() payload: Message): Promise<Message> {
     this.logger.log(payload);
-    this.server.emit('chat', payload); // broadcast messages
+    this.server.to(payload.roomName).emit('chat', payload); // broadcast messages
     return payload;
+  }
+
+  @SubscribeMessage('join_room')
+  async handleSetClientDataEvent(@MessageBody() payload: JoinRoomEventPayload) {
+    if (payload.user.socketId) {
+      this.logger.log(`${payload.user.socketId} is joining ${payload.roomName}`);
+      this.server.in(payload.user.socketId).socketsJoin(payload.roomName);
+      await this.userService.addUserToRoom(payload.roomName, payload.user);
+    }
+  }
+
+  async handleConnection(socket: Socket): Promise<void> {
+    this.logger.log(`Socket connected: ${socket.id}`);
+  }
+
+  async handleDisconnect(socket: Socket): Promise<void> {
+    await this.userService.removeUserFromAllRooms(socket.id);
+    this.logger.log(`Socket disconnected: ${socket.id}`);
   }
 }

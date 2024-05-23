@@ -9,17 +9,17 @@ export function LoginForm({ login }: LoginFormProps) {
           e.preventDefault();
           login(e);
         }}
-        className="flex h-127 w-127 items-center justify-center rounded-full border border-violet-700 ring-2 ring-violet-400"
+        className="flex h-127 w-127 items-center justify-center"
       >
         <Input
           type="text"
           id="login"
           placeholder="Name"
-          className="mx-2 h-12 rounded-md border border-slate-400 bg-gray-800 text-white placeholder-slate-400 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+          className="rounded text-white"
         ></Input>
         <Button
           type="submit"
-          className="mx-2 flex h-12 w-12 items-center justify-center rounded-full bg-violet-700 text-white"
+          className="mx-2 flex h-12 w-12 items-center justify-center  text-white"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

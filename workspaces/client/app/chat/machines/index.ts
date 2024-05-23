@@ -1,3 +1,3 @@
-import { wsChatMachine } from '@/app/chat/machines/wChatMachine';
+import { wsChatMachine } from '@/app/chat/machines/wsChatMachine';
 
 export { wsChatMachine }
