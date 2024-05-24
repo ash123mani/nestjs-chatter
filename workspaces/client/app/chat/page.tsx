@@ -7,7 +7,7 @@ import { wsChatMachine } from '@/app/chat/machines';
 import { Header } from './components/Header';
 import { Messages } from './components/Messages';
 import { MessageForm } from './components/MessageForm';
-import { LoginForm } from './components/LoginForm';
+import { LoginForm } from '../login/components/LoginForm';
 import { FormEvent, useEffect } from 'react';
 import { ClientToServerEvents, ServerToClientEvents } from '@chatter-pwa/shared';
 import { ChatMachineEvent, ChatMachineState } from '@/app/chat/machines/wsChatMachine';
@@ -40,20 +40,9 @@ function Chat() {
 
   return (
     <Box>
-      <>
-        {user && user.userId ? (
-          <>
-            <Header user={user} isConnected={isConnected}></Header>
-            <Messages user={user} messages={messages}></Messages>
+            <Header user={user!} isConnected={isConnected}></Header>
+            <Messages user={user!} messages={messages}></Messages>
             <MessageForm sendMessage={sendMessage}></MessageForm>
-          </>
-        ) : (
-          <>
-            <Text className="text-2xl py-4 text-white">Please Enter name</Text>
-            <LoginForm login={login}></LoginForm>
-          </>
-        )}
-      </>
     </Box>
   )
 
@@ -63,9 +52,11 @@ function Chat() {
         user: {
           userId: user.userId,
           userName: user.userName,
+          socketId: '9999999999999999999999'
         },
         timeSent: new Date(Date.now()).toLocaleString('en-US'),
         message: (e.target as any)[0].value,
+        roomName: 'FAKEFAKEFAKEFAKEFAKEFAKE'
       });
     }
   }
