@@ -2,7 +2,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { LoginForm } from './components/LoginForm';
 import { Rooms } from './components/Rooms';
-import { useRoomsQuery } from '../_lib/chat';
+import { useRoomsQuery } from '../_lib/room';
 import { generateUserId, getUser, setUser } from '@chatter-pwa/client/app/_lib/user';
 import { useGetUser } from '@/app/hooks/useGetUser';
 import { useRouter } from 'next/router';

@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 
-function Loading() {
+export function Loading() {
   return (
     <Box className="flex w-full items-center justify-center py-2">
       <Box className="flex w-full items-center justify-center">

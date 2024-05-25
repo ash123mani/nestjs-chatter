@@ -3,14 +3,14 @@ import axios from 'axios';
 import { Room } from '@chatter-pwa/shared/interfaces/chat.interface';
 
 export const useRoomQuery = (roomName: string, isConnected: boolean) => {
-  const query = useQuery({
-    queryKey: ['rooms', roomName],
-    queryFn: (): Promise<Room> =>
-      axios.get(`/api/rooms/${roomName}`).then((response) => response.data),
-    refetchInterval: 60000,
-    enabled: isConnected,
-  });
-  return query;
+    const query = useQuery({
+      queryKey: ['rooms', roomName],
+      queryFn: (): Promise<Room> =>
+        axios.get(`/api/rooms/${roomName}`).then((response) => response.data),
+      refetchInterval: 60000,
+      enabled: isConnected,
+    });
+    return query;
 };
 
 export const useRoomsQuery = () => {

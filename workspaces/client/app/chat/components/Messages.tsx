@@ -9,14 +9,15 @@ export function Messages({ user, messages }: MessagesProps) {
         return (
           <Box
             key={index}
-            className={determineMessageStyle(user, message.user.userId)}
           >
-            <Text as="span" className="text-sm text-gray-400">
-              {message.user.userName}
-            </Text>
-            <Text as="span" className="text-sm text-gray-400">{' ' + '•' + ' '}</Text>
-            <Text as="span" className="text-sm text-gray-400">{message.timeSent}</Text>
-            <Text as="p" className="text-white">{message.message}</Text>
+            <Box className={determineMessageStyle(user, message.user.userId).sender}>
+              <Text className="text-sm text-gray-400">{message.user.userName}</Text>
+              <Text className="text-sm text-gray-400">{' ' + '•' + ' '}</Text>
+              <Text className="text-sm text-gray-400">{message.timeSent}</Text>
+            </Box>
+            <Box className={determineMessageStyle(user, message.user.userId).message}>
+              <Text className="text-white">{message.message}</Text>
+            </Box>
           </Box>
         );
       })}
@@ -24,11 +25,17 @@ export function Messages({ user, messages }: MessagesProps) {
   );
 };
 
-function determineMessageStyle(user: User, messageUserId: string) {
+function determineMessageStyle(user: Pick<User, 'userId' | 'userName'>, messageUserId: string) {
   if (user && messageUserId === user.userId) {
-    return 'bg-violet-900 p-4 ml-24 mb-4 rounded';
+    return {
+      message: 'bg-slate-500 p-4 ml-24 mb-4 rounded break-words',
+      sender: 'ml-24 pl-4',
+    };
   } else {
-    return 'bg-slate-700 p-4 mr-24 mb-4 rounded';
+    return {
+      message: 'bg-slate-800 p-4 mr-24 mb-4 rounded break-words',
+      sender: 'mr-24 pl-4',
+    };
   }
 };
 

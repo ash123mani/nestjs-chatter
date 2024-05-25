@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Room } from '@chatter-pwa/shared/interfaces/chat.interface';
-import { Spinner } from '@chakra-ui/react';
+import { Loading } from '@/app/login/components/Loading';
 
 export const Rooms = ({ rooms, selectionHandler, selectedRoom, isLoading }: {
   rooms: Room[]
@@ -41,7 +41,7 @@ export const Rooms = ({ rooms, selectionHandler, selectedRoom, isLoading }: {
               {room.name}
             </button>
           ))}
-        {(isLoading || isDelay) && <Spinner />}
+        {(isLoading || isDelay) && <Loading />}
       </div>
     </div>
   );
