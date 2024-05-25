@@ -10,5 +10,5 @@ function Loading() {
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -15,11 +15,11 @@ const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<ChatLayoutProps>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Box className="mx-auto flex h-screen w-screen justify-center bg-gray-900">
-          <Box className="h-full w-4/12">{children}</Box>
-        </Box>
-      </body>
+    <body className={inter.className}>
+    <Box className="mx-auto flex h-screen w-screen justify-center bg-gray-900">
+      <Box className="h-full w-4/12">{children}</Box>
+    </Box>
+    </body>
     </html>
   );
 }

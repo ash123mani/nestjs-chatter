@@ -12,7 +12,8 @@ import { FormEvent, useEffect } from 'react';
 import { ClientToServerEvents, ServerToClientEvents } from '@chatter-pwa/shared';
 import { ChatMachineEvent, ChatMachineState } from '@/app/chat/machines/wsChatMachine';
 
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io("ws://localhost:3001");
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('ws://localhost:3001');
+
 function Chat() {
   const [state, send] = useActor<typeof wsChatMachine>(wsChatMachine);
   const { messages, user } = state.context;
@@ -20,15 +21,15 @@ function Chat() {
 
   useEffect(() => {
     socket.on('connect', () => {
-      send({ type: ChatMachineEvent.Connect })
+      send({ type: ChatMachineEvent.Connect });
     });
 
     socket.on('disconnect', () => {
-      send({ type: ChatMachineEvent.Disconnect })
+      send({ type: ChatMachineEvent.Disconnect });
     });
 
     socket.on('chat', (e) => {
-      send({ type: ChatMachineEvent.SendMessage, payload: e })
+      send({ type: ChatMachineEvent.SendMessage, payload: e });
     });
 
     return () => {
@@ -40,11 +41,11 @@ function Chat() {
 
   return (
     <Box>
-            <Header user={user!} isConnected={isConnected}></Header>
-            <Messages user={user!} messages={messages}></Messages>
-            <MessageForm sendMessage={sendMessage}></MessageForm>
+      <Header user={user!} isConnected={isConnected}></Header>
+      <Messages user={user!} messages={messages}></Messages>
+      <MessageForm sendMessage={sendMessage}></MessageForm>
     </Box>
-  )
+  );
 
   function sendMessage(e: FormEvent<HTMLFormElement>) {
     if (user) {
@@ -52,11 +53,11 @@ function Chat() {
         user: {
           userId: user.userId,
           userName: user.userName,
-          socketId: '9999999999999999999999'
+          socketId: '9999999999999999999999',
         },
         timeSent: new Date(Date.now()).toLocaleString('en-US'),
         message: (e.target as any)[0].value,
-        roomName: 'FAKEFAKEFAKEFAKEFAKEFAKE'
+        roomName: 'FAKEFAKEFAKEFAKEFAKEFAKE',
       });
     }
   }
@@ -71,4 +72,4 @@ function Chat() {
   }
 }
 
-export default Chat
+export default Chat;

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Room } from '@chatter-pwa/shared/interfaces/chat.interface'
-import { Spinner } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react';
+import { Room } from '@chatter-pwa/shared/interfaces/chat.interface';
+import { Spinner } from '@chakra-ui/react';
 
 export const Rooms = ({ rooms, selectionHandler, selectedRoom, isLoading }: {
   rooms: Room[]
@@ -12,12 +12,12 @@ export const Rooms = ({ rooms, selectionHandler, selectedRoom, isLoading }: {
 
   useEffect(() => {
     const delayTimer = setTimeout(() => {
-      setIsDelay(false)
-    }, 1000)
+      setIsDelay(false);
+    }, 1000);
     return () => {
-      clearTimeout(delayTimer)
-    }
-  }, [])
+      clearTimeout(delayTimer);
+    };
+  }, []);
 
   return (
     <div className="h-full w-full rounded-lg border border-slate-400 bg-gray-800 md:h-1/2">
@@ -44,5 +44,5 @@ export const Rooms = ({ rooms, selectionHandler, selectedRoom, isLoading }: {
         {(isLoading || isDelay) && <Spinner />}
       </div>
     </div>
-  )
-}
+  );
+};

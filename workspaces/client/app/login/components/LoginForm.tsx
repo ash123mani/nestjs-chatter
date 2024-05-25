@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Box, Button, Input } from '@chakra-ui/react';
 
 export const LoginForm = ({ login, disableNewRoom, defaultUser }: LoginFormProps) => {
@@ -6,8 +6,8 @@ export const LoginForm = ({ login, disableNewRoom, defaultUser }: LoginFormProps
     <Box className="h-full w-full py-2 md:px-2 md:py-0">
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          login(e)
+          e.preventDefault();
+          login(e);
         }}
         className="flex flex-col justify-center"
       >
@@ -34,11 +34,11 @@ export const LoginForm = ({ login, disableNewRoom, defaultUser }: LoginFormProps
         </Button>
       </form>
     </Box>
-  )
-}
+  );
+};
 
 interface LoginFormProps {
-  login: (e: React.FormEvent<HTMLFormElement>) => void
-  disableNewRoom: boolean
-  defaultUser?: string
+  login: (e: React.FormEvent<HTMLFormElement>) => void;
+  disableNewRoom: boolean;
+  defaultUser?: string;
 }
