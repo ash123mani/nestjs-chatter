@@ -3,7 +3,7 @@ import { Room, User } from '@chatter-pwa/shared';
 
 @Injectable()
 export class UserService {
-  private rooms: Room[];
+  private rooms: Room[] = [];
 
   async addRoom(roomName: string, host: User): Promise<void> {
     const room = await this.getRoomByName(roomName);

@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { ClientToServerEvents, ServerToClientEvents } from '@chatter-pwa/shared';
 import { ChatMachineEvent, ChatMachineState } from '@/app/chat/machines/wsChatMachine';
 import { useGetUser } from '@/app/hooks/useGetUser';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useRoomQuery, unsetRoom } from '@/app/_lib/room';
 import { UsersList } from '@/app/chat/components/UsersList';
 

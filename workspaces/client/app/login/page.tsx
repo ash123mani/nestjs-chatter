@@ -5,7 +5,7 @@ import { Rooms } from './components/Rooms';
 import { useRoomsQuery } from '../_lib/room';
 import { generateUserId, getUser, setUser } from '@chatter-pwa/client/app/_lib/user';
 import { useGetUser } from '@/app/hooks/useGetUser';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 function Login() {
   const router = useRouter();
