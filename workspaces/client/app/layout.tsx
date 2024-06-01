@@ -4,6 +4,7 @@ import './globals.css';
 
 import { Providers } from './providers';
 import { ReactNode } from 'react';
+import { Box } from '@chakra-ui/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,7 +17,11 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en">
     <body className={inter.className}>
-    <Providers>{children}</Providers>
+    <Providers>
+      <Box>
+        {children}
+      </Box>
+    </Providers>
     </body>
     </html>
   );

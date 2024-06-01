@@ -43,15 +43,17 @@ function Chat() {
         });
         send({ type: ChatMachineEvent.Connect });
       });
+
+      socket.on('disconnect', () => {
+        send({ type: ChatMachineEvent.Disconnect });
+      });
+
+      socket.on('chat', (e) => {
+        send({ type: ChatMachineEvent.SendMessage, payload: e });
+      });
+
+      socket.connect();
     }
-
-    socket.on('disconnect', () => {
-      send({ type: ChatMachineEvent.Disconnect });
-    });
-
-    socket.on('chat', (e) => {
-      send({ type: ChatMachineEvent.SendMessage, payload: e });
-    });
 
     return () => {
       socket.off('connect');
