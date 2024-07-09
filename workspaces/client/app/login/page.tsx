@@ -14,9 +14,9 @@ function Login() {
   const { data: rooms, isLoading: roomsLoading } = useRoomsQuery();
   const { user, roomName } = useGetUser();
 
-  useEffect(() => {
-    if (user?.userId && roomName) router.replace('/chat');
-  }, [user, roomName, router]);
+  if (user?.userId && roomName) {
+    router.push('/chat')
+  }
 
   return (
     <Fragment>

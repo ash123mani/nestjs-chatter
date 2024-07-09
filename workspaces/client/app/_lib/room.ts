@@ -24,3 +24,7 @@ export const useRoomsQuery = () => {
 export const unsetRoom = () => {
   sessionStorage.removeItem('room');
 };
+
+export const getRoomName = () => {
+  return sessionStorage.getItem('room');
+}

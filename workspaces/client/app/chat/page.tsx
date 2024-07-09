@@ -7,13 +7,14 @@ import { wsChatMachine } from '@/app/chat/machines';
 import { Header } from './components/Header';
 import { Messages } from './components/Messages';
 import { MessageForm } from './components/MessageForm';
-import { useEffect, useState } from 'react';
-import { ClientToServerEvents, ServerToClientEvents } from '@chatter-pwa/shared';
+import { useEffect, useMemo, useState } from 'react';
+import { ClientToServerEvents, ServerToClientEvents, User } from '@chatter-pwa/shared';
 import { ChatMachineEvent, ChatMachineState } from '@/app/chat/machines/wsChatMachine';
 import { useGetUser } from '@/app/hooks/useGetUser';
 import { useRouter } from 'next/navigation';
 import { useRoomQuery, unsetRoom } from '@/app/_lib/room';
 import { UsersList } from '@/app/chat/components/UsersList';
+import { getUser } from '@/app/_lib/user';
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('ws://localhost:3001');
 
@@ -21,33 +22,32 @@ function Chat() {
   const router = useRouter();
 
   const [state, send] = useActor<typeof wsChatMachine>(wsChatMachine);
-  const { messages, user } = state.context;
+  const { messages } = state.context;
+  const { user, roomName } = useGetUser();
   const isConnected = state.matches(ChatMachineState.Connected);
   const [toggleUserList, setToggleUserList] = useState<boolean>(false);
 
-  const { roomName } = useGetUser();
   const { data: room } = useRoomQuery(roomName!, isConnected);
 
 
   useEffect(() => {
     if (!user || !roomName) {
-      router.replace('/');
+      router.push('/login');
     } else {
       socket.on('connect', () => {
         socket.emit('join_room', {
           roomName,
           user: {
-            ...user,
+            userId: user.userId!,
+            userName: user.userName!,
             socketId: socket.id!,
           },
         });
         send({ type: ChatMachineEvent.Connect });
       });
-
       socket.on('disconnect', () => {
         send({ type: ChatMachineEvent.Disconnect });
       });
-
       socket.on('chat', (e) => {
         send({ type: ChatMachineEvent.SendMessage, payload: e });
       });
@@ -60,11 +60,15 @@ function Chat() {
       socket.off('disconnect');
       socket.off('chat');
     };
-  }, [send]);
+  }, [user, roomName, send, router]);
+
+  const memoedUser = useMemo(()=> ({
+    userName: user?.userName!, userId: user?.userId!
+  }), [user?.userName,  user?.userId]);
 
   return (
     <Box>
-      {user?.userId && roomName && room && <Box>
+      {user?.userId && user?.userName && roomName && room && <Box>
         <Header
           users={room?.users ?? []}
           isConnected={isConnected}
@@ -75,7 +79,7 @@ function Chat() {
         {toggleUserList ? (
           <UsersList room={room}></UsersList>
         ) : (
-          <Messages user={user} messages={messages}></Messages>
+          <Messages user={memoedUser!} messages={messages} />
         )}
         <MessageForm sendMessage={sendMessage}></MessageForm>
       </Box>}
@@ -86,8 +90,8 @@ function Chat() {
     if (user && socket && roomName) {
       socket.emit('chat', {
         user: {
-          userId: user.userId,
-          userName: user.userName,
+          userId: user.userId!,
+          userName: user.userName!,
           socketId: socket.id!,
         },
         timeSent: new Date(Date.now()).toLocaleString('en-US'),

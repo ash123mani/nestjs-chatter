@@ -2,16 +2,12 @@
 import { useRouter } from 'next/navigation';
 import { Flex, Link, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useEffect } from 'react';
-import { useGetUser } from '@/app/hooks/useGetUser';
+
 
 export default function Home() {
   const router = useRouter();
-  const { user, roomName } = useGetUser();
 
-  useEffect(() => {
-    if (user?.userId && roomName) router.replace('/chat');
-  }, [user, roomName, router]);
+  router.push('/login')
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

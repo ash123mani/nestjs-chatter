@@ -1,30 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { getUser } from '@/app/_lib/user';
-import { ApiFetchStatus } from '@chatter-pwa/shared/interfaces';
+import { getRoomName } from '@/app/_lib/room';
 
 export function useGetUser(): UserChatInterface {
-  const [user, setUser] = useState<UserChatInterface>({
-    user: null,
-    roomName: null,
-  });
-  const [apiStatus, setApiStatus] = useState(ApiFetchStatus.Idle);
+  const userRef = useRef<UserChatInterface>();
 
-  useEffect(() => {
-    try {
-      setApiStatus(ApiFetchStatus.Pending);
-      const currentUser = getUser();
-      setUser({
-        user: currentUser,
-        roomName: sessionStorage.getItem('room'),
-      });
-      setApiStatus(ApiFetchStatus.Sucessfull);
-    } catch (e) {
-      setApiStatus(ApiFetchStatus.Failed);
-    }
+  if (!userRef.current) {
+    const user = getUser();
+    const room = getRoomName();
+    userRef.current = {
+      user: {
+        userId: user?.userId,
+        userName: user?.userName,
+      },
+      roomName: room
+    };
+  }
 
-  }, []);
 
-  return user;
+  return userRef.current;
 }
 
 interface UserChatInterface {

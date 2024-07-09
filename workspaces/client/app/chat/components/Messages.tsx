@@ -40,6 +40,6 @@ function determineMessageStyle(user: Pick<User, 'userId' | 'userName'>, messageU
 };
 
 interface MessagesProps {
-  user: User;
+  user: Pick<User, 'userId' | 'userName'>;
   messages: Message[];
 }

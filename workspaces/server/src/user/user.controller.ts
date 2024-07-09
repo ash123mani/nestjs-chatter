@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Room, GetRoomParams } from '@chatter-pwa/shared';
 
-@Controller('user')
+@Controller()
 export class UserController {
   constructor(private userService: UserService) {}
 

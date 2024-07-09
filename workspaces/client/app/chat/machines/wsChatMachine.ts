@@ -3,6 +3,7 @@ import {
   Message,
   User,
 } from '@chatter-pwa/shared';
+import { getUser } from '@/app/_lib/user';
 
 export enum ChatMachineState {
   Connected = 'CONNECTED',
@@ -22,17 +23,8 @@ export const wsChatMachine = setup({
     context: {} as ChatMachineContext,
     events: {} as ChatMachineEvents,
   },
-  actions: {
-    updateLoggedInUser: assign({
-      user: (_, params: { user: User }) => {
-        if (params.user.userId) return params.user;
-        else return null;
-      },
-    }),
-  },
 }).createMachine({
   id: 'chatMachine',
-  entry: [{ type: 'updateLoggedInUser', params: { user: JSON.parse(sessionStorage.getItem('user') ?? '{}') as User } }],
   initial: ChatMachineState.Disconnected,
   context: {
     messages: [],
